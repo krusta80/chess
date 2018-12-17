@@ -12,7 +12,7 @@ class Bit
 
         int
         Pop(U64 &bb) { // also called dropForward
-            int idx = bitScanForward(bb);
+            int idx = __builtin_ffsll(bb)-1;
             bb &= bb - 1; // reset bit outside
             return idx;
         }
