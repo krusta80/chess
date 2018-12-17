@@ -8,14 +8,16 @@ SOURCES += \
     magic-bits/src/slider_attacks.cpp \
     move_generator.cpp \
     move.cpp \
-    board.cpp
+    board.cpp \
+    bit.cpp
 
 HEADERS += \
     magic-bits/src/common.h \
     magic-bits/src/slider_attacks.h \
     move.h \
     board.h \
-    move_generator.h
+    move_generator.h \
+    bit.h
 
 DISTFILES += \
     magic-bits/magics/bishop_attack_table.magic \

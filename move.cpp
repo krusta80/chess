@@ -1,6 +1,6 @@
 #include "move.h"
 
-Move::Board()
-{
+//Move::Board()
+//{
 
-}
+//}
