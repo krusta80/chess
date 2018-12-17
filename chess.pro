@@ -5,15 +5,17 @@ CONFIG -= qt
 
 SOURCES += \
         main.cpp \
-    magic-bits/src/magic_bits.cpp \
     magic-bits/src/slider_attacks.cpp \
-    magic-bits/src/slider_attacks_test.cpp \
-    main.cpp \
-    main.cpp
+    move_generator.cpp \
+    move.cpp \
+    board.cpp
 
 HEADERS += \
     magic-bits/src/common.h \
-    magic-bits/src/slider_attacks.h
+    magic-bits/src/slider_attacks.h \
+    move.h \
+    board.h \
+    move_generator.h
 
 DISTFILES += \
     magic-bits/magics/bishop_attack_table.magic \
