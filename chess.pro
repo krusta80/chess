@@ -9,7 +9,8 @@ SOURCES += \
     move_generator.cpp \
     move.cpp \
     board.cpp \
-    bit.cpp
+    bit.cpp \
+    kingattacks.cpp
 
 HEADERS += \
     magic-bits/src/common.h \
@@ -17,7 +18,8 @@ HEADERS += \
     move.h \
     board.h \
     move_generator.h \
-    bit.h
+    bit.h \
+    kingattacks.h
 
 DISTFILES += \
     magic-bits/magics/bishop_attack_table.magic \
