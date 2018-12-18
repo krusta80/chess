@@ -10,7 +10,8 @@ SOURCES += \
     move.cpp \
     board.cpp \
     bit.cpp \
-    kingattacks.cpp
+    king_attacks.cpp \
+    pawn_moves.cpp
 
 HEADERS += \
     magic-bits/src/common.h \
@@ -19,7 +20,8 @@ HEADERS += \
     board.h \
     move_generator.h \
     bit.h \
-    kingattacks.h
+    king_attacks.h \
+    pawn_moves.h
 
 DISTFILES += \
     magic-bits/magics/bishop_attack_table.magic \

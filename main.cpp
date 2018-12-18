@@ -1,5 +1,5 @@
 #include <iostream>
-#include "kingattacks.h"
+#include "king_attacks.h"
 #include "magic-bits/src/slider_attacks.h"
 #include "bit.h"
 

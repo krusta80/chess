@@ -1,4 +1,4 @@
-#include "kingattacks.h"
+#include "king_attacks.h"
 
 void KingAttacks::Initialize() {
     for (int i = 0; i < 64; i++) {
