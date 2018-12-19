@@ -10,8 +10,7 @@ SOURCES += \
     move.cpp \
     board.cpp \
     bit.cpp \
-    king_attacks.cpp \
-    pawn_moves.cpp
+    king_attacks.cpp
 
 HEADERS += \
     magic-bits/src/common.h \
