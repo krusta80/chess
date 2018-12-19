@@ -3,8 +3,6 @@
 
 #include "magic-bits/src/common.h"
 
-#include <vector>
-
 // Comprises methods to generate pawn moves
 // from a square, for a given piece occupancy bitboard.
 // Note that en passant is NOT covered
