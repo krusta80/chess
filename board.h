@@ -14,6 +14,8 @@ class Board
         U64 white_bitboard;
         U64 black_bitboard;
 
+        U64 knight_bitboard[2];
+
     private:
 };
 
