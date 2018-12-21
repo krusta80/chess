@@ -20,7 +20,8 @@ HEADERS += \
     move_generator.h \
     bit.h \
     king_attacks.h \
-    pawn_moves.h
+    pawn_moves.h \
+    knight_attacks.h
 
 DISTFILES += \
     magic-bits/magics/bishop_attack_table.magic \
