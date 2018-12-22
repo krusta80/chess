@@ -13,3 +13,8 @@ I suppose that makes my first order of business handling similar logic for non-s
 
 <b>12/17/18</b><br>
 It's almost 1am, and I'm ready for bed.  That said, I'm going to bed pretty satisfied, since I've found a way to rapidly generate a move list from an attack bitboard.  (https://www.chessprogramming.org/BitScan#DeBruijnMultiplation)
+
+<b>12/21/18</b><br>
+It's been a busy week, but I've managed to spend some time here and there digging a bit more deeply into bitboards and how to best leverage them.  I'm finding myself striving for the "perfect" approach and making little to no tangible progress, however.
+
+I think it's important to take an iterative approach at this point and accept that improvements will be inevitable regardless.  I think my knowledge base is also at the point now where following my own design and ideas will prove the most rewarding course of action.  After all, if I were truly obsessed with creating the world's best chess engine, I'd simply use Stockfish (or Lc0) as my starting point.  ;)
