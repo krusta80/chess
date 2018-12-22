@@ -1,6 +1,7 @@
 #ifndef KINGATTACKS_H
 #define KINGATTACKS_H
 
+#include "bit.h"
 #include "magic-bits/src/common.h"
 
 #include <vector>
@@ -12,6 +13,10 @@ class KingAttacks
 {
     public:
         void Initialize();
+
+        U64 Attacks(const U64 occupied, U64 kingBitboard) const {
+            return attack_table_[Bit::Pop(kingBitboard)] & ~occupied;
+        }
 
         U64 Attacks(const U64 bitboard, const int index) const {
             return attack_table_[index]&~bitboard;

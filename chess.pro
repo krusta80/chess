@@ -9,7 +9,6 @@ SOURCES += \
     move_generator.cpp \
     move.cpp \
     board.cpp \
-    bit.cpp \
     king_attacks.cpp
 
 HEADERS += \

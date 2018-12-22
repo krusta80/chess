@@ -8,9 +8,7 @@
 class Bit
 {
     public:
-        Bit();
-
-        int
+        static int
         Pop(U64 &bb) { // also called dropForward
             int idx = __builtin_ffsll(bb)-1;
             bb &= bb - 1; // reset bit outside
@@ -24,14 +22,14 @@ class Bit
          * @precondition bb != 0
          * @return index (0..63) of least significant one bit
          */
-        int bitScanForward(U64 bb) {
+        static int bitScanForward(U64 bb) {
            const U64 debruijn64 = 0x03f79d71b4cb0a89;
            assert (bb != 0);
            return index64_[((bb ^ (bb-1)) * debruijn64) >> 58];
         }
 
     private:
-        const int index64_[64] = {
+        static constexpr int index64_[64] = {
             0, 47,  1, 56, 48, 27,  2, 60,
            57, 49, 41, 37, 28, 16,  3, 61,
            54, 58, 35, 52, 50, 42, 21, 44,
