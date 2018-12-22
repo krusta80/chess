@@ -17,4 +17,6 @@ It's almost 1am, and I'm ready for bed.  That said, I'm going to bed pretty sati
 <b>12/21/18</b><br>
 It's been a busy week, but I've managed to spend some time here and there digging a bit more deeply into bitboards and how to best leverage them.  I'm finding myself striving for the "perfect" approach and making little to no tangible progress, however.
 
-I think it's important to take an iterative approach at this point and accept that improvements will be inevitable regardless.  I think my knowledge base is also at the point now where following my own design and ideas will prove the most rewarding course of action.  After all, if I were truly obsessed with creating the world's best chess engine, I'd simply use Stockfish (or Lc0) as my starting point.  ;)
+I think it's important to take an iterative approach at this point and accept that improvements will be inevitable regardless.  I think my knowledge base is also at the point now where following my own design and ideas will prove the most rewarding course of action.  After all, if my only goal is to create the world's best chess engine, I'd simply use Stockfish (or Lc0) as my starting point.  ;)
+
+I also need to be more patient I think and use this as an opportunity to properly architect a C++ program, following industry standards as closely as possible.
