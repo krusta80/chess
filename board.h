@@ -12,6 +12,9 @@ class Board
         U64 blackBitboard();
         U64 occupancyBitboard();
 
+        // Attacks
+        U64 attacked[2];
+
         // Pieces
         U64 bishop_bitboard[2];
         U64 king_bitboard[2];
