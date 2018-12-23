@@ -14,12 +14,8 @@ class KingAttacks
     public:
         void Initialize();
 
-        U64 Attacks(const U64 occupied, U64 kingBitboard) const {
-            return attack_table_[Bit::Pop(kingBitboard)] & ~occupied;
-        }
-
-        U64 Attacks(const U64 bitboard, const int index) const {
-            return attack_table_[index]&~bitboard;
+        U64 Attacks(const U64 occupied, const U64 attackedByOpponent, const int index) const {
+            return attack_table_[index] & ~occupied & ~attackedByOpponent;
         }
 
     private:
