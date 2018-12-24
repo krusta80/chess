@@ -1,25 +1,24 @@
 #include <iostream>
 
 #include "bit.h"
-#include "king_attacks.h"
-
-using namespace std;
+#include "move_generator.h"
 
 int main()
 {
-    KingAttacks kingAttacks;
-    U64 board;
+    MoveGenerator* moveGenerator = new MoveGenerator();
+    Board board;
 
-    kingAttacks.Initialize();
-//    board = pawnMoves.Attacks(1L<<3|1L<<5, 12, 1);
-//        while (board > 0) {
-//            cout << Bit().Pop(board) << endl;
-//        }
-//        cout << endl;
+    board.initialize();
+    board.bishop_bitboard[0] = 1L<<0;
+    board.bishop_bitboard[1] = 1L<<1;
 
-    board = kingAttacks.Attacks(1L<<48, 43);
-    while (board > 0) {
-        cout << Bit().Pop(board) << endl;
+    board.king_bitboard[0] = 1L<<7;
+    board.king_bitboard[1] = 1L<<56;
+
+    board.updateOccupancyBitboard();
+    moveGenerator->generateAllMoves(board, 0);
+
+    for (std::vector<Move*>::iterator i = moveGenerator->moveList.begin(); i != moveGenerator->moveList.end(); ++i) {
+        std::cout << (*i)->origin << "," << (*i)->destination << std::endl;
     }
-    cout << endl;
 }

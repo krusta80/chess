@@ -6,13 +6,12 @@ class Move
 {
     public:
         Move(const int origin, const int destination) {
-            this->origin_ = origin;
-            this->destination_ = destination;
+            this->origin = origin;
+            this->destination = destination;
         }
 
-    private:
-        static int origin_;
-        static int destination_;
+        int origin;
+        int destination;
 };
 
 #endif // MOVE_H

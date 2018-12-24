@@ -6,11 +6,14 @@
 class Board
 {
     public:
+        void initialize();
+
         // Occupancy
         U64 movingSideBitboard(const int side);
         U64 whiteBitboard();
         U64 blackBitboard();
         U64 occupancyBitboard();
+        void updateOccupancyBitboard();
 
         // Attacks
         U64 attacked[2];

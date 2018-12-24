@@ -10,6 +10,7 @@
 #include "move.h"
 #include "pawn_moves.h"
 
+#include <iostream>
 #include <vector>
 
 class MoveGenerator {
@@ -21,21 +22,20 @@ class MoveGenerator {
       slider_attacks_.Initialize();
     }
 
-    std::vector<Move*> generateAllMoves(Board& board, const int side) {
+    void generateAllMoves(Board& board, const int side) {
         moveList = std::vector<Move*>();
 
         addAllBishopMoves(board, side);
         addKingMoves(
                     board.occupancyBitboard(),
                     board.movingSideBitboard(side),
-                    Bit().bitScanForward(board.king_bitboard[side]));
+                    __builtin_ffsll(board.king_bitboard[side])-1);
         addAllKnightMoves(board, side);
         addAllPawnMoves(board, side);
         addAllQueenMoves(board, side);
         addAllRookMoves(board, side);
 
-        removeIllegalMoves();
-        return moveList;
+        removeIllegalMoves(board);
     }
 
   private:
@@ -109,6 +109,9 @@ class MoveGenerator {
 
     void addBishopMoves(U64 allPieces, U64 friendlyPieces, const int bishopIndex) {
         U64 bishopAttacks = slider_attacks_.BishopAttacks(allPieces, bishopIndex);
+        std::cout << "bishop attacks is " << std::hex << bishopAttacks << std::endl;
+        std::cout << "friendly pieces is " << std::hex << friendlyPieces << std::endl;
+        std::cout << "bishop index is " << bishopIndex << std::endl;
 
         bishopAttacks &= ~friendlyPieces;
         addMovesFromAttackBitboard(bishopAttacks, bishopIndex);
@@ -154,7 +157,7 @@ class MoveGenerator {
 
     void addMovesFromAttackBitboard(U64 bitboard, const int piece_index) {
         while (bitboard > 0) {
-             moveList.push_back(new Move(piece_index, Bit().Pop(bitboard)));
+            moveList.push_back(new Move(piece_index, Bit().Pop(bitboard)));
         }
     }
 
