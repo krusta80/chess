@@ -23,6 +23,7 @@ class MoveGenerator {
 
     std::vector<Move*> generateAllMoves(Board& board, const int side) {
         moveList = std::vector<Move*>();
+
         addAllBishopMoves(board, side);
         addKingMoves(
                     board.occupancyBitboard(),
@@ -32,6 +33,8 @@ class MoveGenerator {
         addAllPawnMoves(board, side);
         addAllQueenMoves(board, side);
         addAllRookMoves(board, side);
+
+        removeIllegalMoves();
         return moveList;
     }
 
@@ -84,6 +87,24 @@ class MoveGenerator {
         while (bitboard > 0) {
              addRookMoves(board, Bit().Pop(bitboard), side);
         }
+    }
+
+    void removeIllegalMoves(Board& board) {
+        int moveCount = moveList.size();
+
+        for (int i = 0; i < moveCount; i++) {
+            if (isIllegal(moveList.at(i), board)) {
+                std::iter_swap(moveList.begin() + i, moveList.end() - 1);
+                moveList.pop_back();
+                moveCount--;
+                i--;
+            }
+        }
+    }
+
+    bool isIllegal(Move* move, Board& board) {
+        // TODO(jgruska): Add legality check.
+        return false;
     }
 
     void addBishopMoves(U64 allPieces, U64 friendlyPieces, const int bishopIndex) {
