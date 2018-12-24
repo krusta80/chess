@@ -20,6 +20,18 @@ class SliderAttacks {
  public:
   void Initialize();
 
+  U64 xrayRookAttacks(U64 occ, U64 blockers, const int index) {
+     U64 attacks = RookAttacks(occ, index);
+     blockers &= attacks;
+     return attacks ^ RookAttacks(occ ^ blockers, index);
+  }
+
+  U64 xrayBishopAttacks(U64 occ, U64 blockers, const int index) {
+     U64 attacks = BishopAttacks(occ, index);
+     blockers &= attacks;
+     return attacks ^ BishopAttacks(occ ^ blockers, index);
+  }
+
   U64 RookAttacks(const U64 bitboard, const int index) const {
     const Magic& m = rook_magics_[index];
     return rook_attack_table_[AttackTableIndex(bitboard, m)];
