@@ -14,8 +14,8 @@ class KingAttacks
     public:
         void Initialize();
 
-        U64 Attacks(const U64 occupied, const U64 attackedByOpponent, const int index) const {
-            return attack_table_[index] & ~occupied & ~attackedByOpponent;
+        U64 Attacks(const U64 occupied, const int index) const {
+            return attack_table_[index] & ~occupied;
         }
 
     private:

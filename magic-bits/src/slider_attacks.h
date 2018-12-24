@@ -32,6 +32,12 @@ class SliderAttacks {
      return attacks ^ BishopAttacks(occ ^ blockers, index);
   }
 
+  U64 xrayQueenAttacks(U64 occ, U64 blockers, const int index) {
+     U64 attacks = QueenAttacks(occ, index);
+     blockers &= attacks;
+     return attacks ^ QueenAttacks(occ ^ blockers, index);
+  }
+
   U64 RookAttacks(const U64 bitboard, const int index) const {
     const Magic& m = rook_magics_[index];
     return rook_attack_table_[AttackTableIndex(bitboard, m)];
