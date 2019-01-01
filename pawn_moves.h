@@ -63,8 +63,8 @@ class PawnMoves
             return emptySpaces & (pawns>>8);
         }
 
-        const U64 nonAFile_ = 0xF8F8F8F8F8F8F8F8;
-        const U64 nonHFile_ = 0xEFEFEFEFEFEFEFEF;
+        const U64 nonAFile_ = 0xFEFEFEFEFEFEFEFE;
+        const U64 nonHFile_ = 0x7F7F7F7F7F7F7F7F;
         const U64 rank4_ = 255L<<24;
         const U64 rank5_ = 255L<<32;
 };

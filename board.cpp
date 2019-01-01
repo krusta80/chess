@@ -4,18 +4,18 @@
 #include <iostream>>
 
 void Board::initialize() {
-    bishop_bitboard[0] = 0x0000000000000000;
-    bishop_bitboard[1] = 0x0000000000000000;
-    king_bitboard[0] = 0x0000000000000000;
-    king_bitboard[1] = 0x0000000000000000;
-    knight_bitboard[0] = 0x0000000000000000;
-    knight_bitboard[1] = 0x0000000000000000;
-    pawn_bitboard[0] = 0x0000000000000000;
-    pawn_bitboard[1] = 0x0000000000000000;
-    queen_bitboard[0] = 0x0000000000000000;
-    queen_bitboard[1] = 0x0000000000000000;
-    rook_bitboard[0] = 0x0000000000000000;
-    rook_bitboard[1] = 0x0000000000000000;
+    bishop_bitboard[0] = 0ULL;
+    bishop_bitboard[1] = 0ULL;
+    king_bitboard[0] = 0ULL;
+    king_bitboard[1] = 0ULL;
+    knight_bitboard[0] = 0ULL;
+    knight_bitboard[1] = 0ULL;
+    pawn_bitboard[0] = 0ULL;
+    pawn_bitboard[1] = 0ULL;
+    queen_bitboard[0] = 0ULL;
+    queen_bitboard[1] = 0ULL;
+    rook_bitboard[0] = 0ULL;
+    rook_bitboard[1] = 0ULL;
 }
 
 U64 Board::movingSideBitboard(const int side) {
@@ -35,7 +35,7 @@ U64 Board::occupancyBitboard() {
 }
 
 void Board::updateOccupancyBitboard() {
-    occupancy_bitboard_[0] = 0x0000000000000000;
+    occupancy_bitboard_[0] = 0ULL;
     occupancy_bitboard_[0] |= bishop_bitboard[0];
     occupancy_bitboard_[0] |= king_bitboard[0];
     occupancy_bitboard_[0] |= knight_bitboard[0];
@@ -43,13 +43,11 @@ void Board::updateOccupancyBitboard() {
     occupancy_bitboard_[0] |= queen_bitboard[0];
     occupancy_bitboard_[0] |= rook_bitboard[0];
 
-    occupancy_bitboard_[1] =
-            (bishop_bitboard[1] |
-            king_bitboard[1] |
-            knight_bitboard[1] |
-            pawn_bitboard[1] |
-            queen_bitboard[1] |
-            rook_bitboard[1]);
-    std::cout << "friendly pieces is " << std::hex << occupancy_bitboard_[0] << std::endl;
-    std::cout << "friendly pieces is " << std::hex << occupancy_bitboard_[1] << std::endl;
+    occupancy_bitboard_[1] = 0ULL;
+    occupancy_bitboard_[1] |= bishop_bitboard[1];
+    occupancy_bitboard_[1] |= king_bitboard[1];
+    occupancy_bitboard_[1] |= knight_bitboard[1];
+    occupancy_bitboard_[1] |= pawn_bitboard[1];
+    occupancy_bitboard_[1] |= queen_bitboard[1];
+    occupancy_bitboard_[1] |= rook_bitboard[1];
 }

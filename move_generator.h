@@ -109,9 +109,6 @@ class MoveGenerator {
 
     void addBishopMoves(U64 allPieces, U64 friendlyPieces, const int bishopIndex) {
         U64 bishopAttacks = slider_attacks_.BishopAttacks(allPieces, bishopIndex);
-        std::cout << "bishop attacks is " << std::hex << bishopAttacks << std::endl;
-        std::cout << "friendly pieces is " << std::hex << friendlyPieces << std::endl;
-        std::cout << "bishop index is " << bishopIndex << std::endl;
 
         bishopAttacks &= ~friendlyPieces;
         addMovesFromAttackBitboard(bishopAttacks, bishopIndex);
@@ -130,13 +127,13 @@ class MoveGenerator {
         switch (side) {
             case WHITE_:
               pawn_moves = pawn_moves_.WhiteMoves(
-                            board.pawn_bitboard[side],
+                            1L<<pawn_index,
                             ~board.occupancyBitboard());
               break;
             case BLACK_:
               pawn_moves = pawn_moves_.BlackMoves(
-                            board.pawn_bitboard[side],
-                          ~board.occupancyBitboard());
+                            1L<<pawn_index,
+                           ~board.occupancyBitboard());
         }
         addMovesFromAttackBitboard(pawn_moves, pawn_index);
     }

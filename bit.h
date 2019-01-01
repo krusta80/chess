@@ -4,6 +4,7 @@
 #include "magic-bits/src/common.h"
 
 #include <cassert>
+#include <iostream>
 
 class Bit
 {
@@ -26,6 +27,15 @@ class Bit
            const U64 debruijn64 = 0x03f79d71b4cb0a89;
            assert (bb != 0);
            return index64_[((bb ^ (bb-1)) * debruijn64) >> 58];
+        }
+
+        static void printBoard(U64 board) {
+            for (int i = 7; i >= 0; i--) {
+                for (int j = 0; j < 8; j++) {
+                    std::cout << ((board>>(i*8+j))&1);
+                }
+                std::cout << std::endl;
+            }
         }
 
     private:
