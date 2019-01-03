@@ -9,7 +9,7 @@ class Board
         void initialize();
 
         // Occupancy
-        U64 movingSideBitboard(const int side);
+        U64 sideBitboard(const int side);
         U64 whiteBitboard();
         U64 blackBitboard();
         U64 occupancyBitboard();
@@ -19,12 +19,20 @@ class Board
         U64 attacked[2];
 
         // Pieces
-        U64 bishop_bitboard[2];
-        U64 king_bitboard[2];
-        U64 knight_bitboard[2];
-        U64 pawn_bitboard[2];
-        U64 queen_bitboard[2];
-        U64 rook_bitboard[2];
+        U64 pieces[6][2];
+        U64 getBishopBitboard(const int side);
+        U64 getKingBitboard(const int side);
+        U64 getKnightBitboard(const int side);
+        U64 getPawnBitboard(const int side);
+        U64 getQueenBitboard(const int side);
+        U64 getRookBitboard(const int side);
+
+        constexpr static int BISHOP_INDEX = 0;
+        constexpr static int KING_INDEX = 1;
+        constexpr static int KNIGHT_INDEX = 2;
+        constexpr static int PAWN_INDEX = 3;
+        constexpr static int QUEEN_INDEX = 4;
+        constexpr static int ROOK_INDEX = 5;
 
     private:
         U64 occupancy_bitboard_[2];

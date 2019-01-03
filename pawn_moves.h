@@ -2,6 +2,8 @@
 #define PAWN_MOVES_H
 
 #include "magic-bits/src/common.h"
+#include <iostream>>
+#include "bit.h"
 
 // Comprises methods to generate pawn moves
 // from a square, for a given piece occupancy bitboard.
@@ -18,9 +20,18 @@ class PawnMoves
             return (BlackAttacks(pawns, emptySpaces) | BlackAdvances(pawns, emptySpaces));
         }
 
+        U64 Attacks(const U64 pawns, const U64 emptySpaces, const int side) const {
+            switch (side) {
+                case WHITE_:
+                    return WhiteAttacks(pawns, emptySpaces);
+                case BLACK_:
+                    return BlackAttacks(pawns, emptySpaces);
+            }
+        }
+
         U64 WhiteAttacks(const U64 pawns, const U64 emptySpaces) const {
-            U64 upperRight = (pawns & nonHFile_)<<7;
-            U64 upperLeft = (pawns & nonAFile_)<<9;
+            U64 upperRight = (pawns & nonHFile_)<<9;
+            U64 upperLeft = (pawns & nonAFile_)<<7;
 
             return (upperRight | upperLeft) & ~emptySpaces;
         }
@@ -62,6 +73,9 @@ class PawnMoves
         U64 BlackSingleAdvances_(const U64 pawns, const U64 emptySpaces) const {
             return emptySpaces & (pawns>>8);
         }
+
+        constexpr static int WHITE_ = 0;
+        constexpr static int BLACK_ = 1;
 
         const U64 nonAFile_ = 0xFEFEFEFEFEFEFEFE;
         const U64 nonHFile_ = 0x7F7F7F7F7F7F7F7F;
