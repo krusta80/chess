@@ -27,9 +27,10 @@ class MoveGenerator {
         moveList = std::vector<Move*>();
 
         addAllBishopMoves(board, side);
-        addKingMoves(
+        addKingAttacks(
                     board.sideBitboard(side),
                     __builtin_ffsll(board.getKingBitboard(side))-1);
+        addCastlingIfLegal(board, side);
         addAllKnightMoves(board, side);
         addAllPawnMoves(board, side);
         addAllQueenMoves(board, side);
@@ -50,10 +51,45 @@ class MoveGenerator {
         }
     }
 
-    void addKingMoves(U64 friendlyPieces, const int kingIndex) {
+    void addKingAttacks(U64 friendlyPieces, const int kingIndex) {
         U64 kingAttacks = king_attacks_.Attacks(friendlyPieces, kingIndex);
 
         addMovesFromAttackBitboard(kingAttacks, kingIndex, Board::KING_INDEX);
+    }
+
+    void addCastlingIfLegal(Board& board, const int side) {
+        addKingsideCastlingIfLegal(board, side);
+        addQueensideCastlingIfLegal(board, side);
+    }
+
+    void addKingsideCastlingIfLegal(Board& board, const int side) {
+        if (board.never_castle_kingside[side]) {
+            return;
+        }
+        if ((board.occupancyBitboard() & 0x60) > 0) {
+            return;
+        }
+        if (isAttacked(board, 0x20, side) ||
+                isAttacked(board, 0x40, side) ||
+                isAttacked(board, 0x10, side)) {
+            return;
+        }
+        moveList.push_back(new Move(4, 6, Board::KING_INDEX));
+    }
+
+    void addQueensideCastlingIfLegal(Board& board, const int side) {
+        if (board.never_castle_queenside[side]) {
+            return;
+        }
+        if ((board.occupancyBitboard() & 0xE) > 0) {
+            return;
+        }
+        if (isAttacked(board, 0x8, side) ||
+                isAttacked(board, 0x4, side) ||
+                isAttacked(board, 0x10, side)) {
+            return;
+        }
+        moveList.push_back(new Move(4, 2, Board::KING_INDEX));
     }
 
     void addAllKnightMoves(Board& board, const int side) {
@@ -137,14 +173,20 @@ class MoveGenerator {
     }
 
     bool isInCheck(Board& board, const int side) {
-        int kingSpot = __builtin_ffsll(board.getKingBitboard(side))-1;
+        return isAttacked(board, board.getKingBitboard(side), side);
+    }
+
+    bool isAttacked(Board& board, U64 square_bitboard, int side) {
+        // TODO(jgruska): Speed this up.
+        const int index =  __builtin_ffsll(square_bitboard)-1;
         U64 bishop_checks = slider_attacks_.BishopAttacks(board.occupancyBitboard(),
-                                                       kingSpot);
+                                                       index);
         U64 rook_checks = slider_attacks_.RookAttacks(board.occupancyBitboard(),
-                                                       kingSpot);
-        U64 knight_checks = knight_attacks_.Attacks(board.getKingBitboard(side));
-        U64 pawn_checks = pawn_moves_.Attacks(board.getKingBitboard(side), ~board.getPawnBitboard(1-side), side);
-        U64 king_checks = king_attacks_.Attacks(board.getKingBitboard(1-side), kingSpot);
+                                                       index);
+        U64 knight_checks = knight_attacks_.Attacks(square_bitboard);
+        U64 pawn_checks = pawn_moves_.Attacks(square_bitboard,
+                                              ~board.getPawnBitboard(1-side), side);
+        U64 king_checks = king_attacks_.Attacks(board.getKingBitboard(1-side), index);
 
         bishop_checks &= (board.getBishopBitboard(1-side) | board.getQueenBitboard(1-side));
         king_checks &= (board.getKingBitboard(1-side));
@@ -198,9 +240,9 @@ class MoveGenerator {
         addMovesFromAttackBitboard(rook_attacks, rook_index, Board::ROOK_INDEX);
     }
 
-    void addMovesFromAttackBitboard(U64 bitboard, const int piece_index, const int piece_type_index) {
+    void addMovesFromAttackBitboard(U64 bitboard, const int piece_index, const int piece_type) {
         while (bitboard > 0) {
-            moveList.push_back(new Move(piece_index, Bit().Pop(bitboard), piece_type_index));
+            moveList.push_back(new Move(piece_index, Bit().Pop(bitboard), piece_type));
         }
     }
 

@@ -4,6 +4,11 @@
 #include <iostream>>
 
 void Board::initialize() {
+    never_castle_kingside[0] = false;
+    never_castle_kingside[1] = false;
+    never_castle_queenside[0] = false;
+    never_castle_queenside[1] = false;
+
     for (int i = 0; i < 6; i++) {
         pieces[i][0] = 0ULL;
         pieces[i][1] = 0ULL;
