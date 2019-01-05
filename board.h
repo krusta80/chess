@@ -47,6 +47,10 @@ class Board
         const static U64 BACK_RANK_F[2];
         const static U64 BACK_RANK_G[2];
 
+        // En Passant
+        U64 enPassantDestination;
+        U64 enPassantTarget;
+
     private:
         U64 occupancy_bitboard_[2];
 };
