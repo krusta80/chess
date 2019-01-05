@@ -38,16 +38,14 @@ class Board
         bool never_castle_kingside[2];
         bool never_castle_queenside[2];
 
-        constexpr static U64 C1 = 0x0000000000000020;
-        constexpr static U64 D1 = 0x0000000000000010;
-        constexpr static U64 E1 = 0x0000000000000008;
-        constexpr static U64 F1 = 0x0000000000000004;
-        constexpr static U64 G1 = 0x0000000000000002;
-        constexpr static U64 C8 = 0x2000000000000000;
-        constexpr static U64 D8 = 0x1000000000000000;
-        constexpr static U64 E8 = 0x0800000000000000;
-        constexpr static U64 F8 = 0x0400000000000000;
-        constexpr static U64 G8 = 0x0200000000000000;
+        const static U64 BACK_RANK_BCD[2];
+        const static U64 BACK_RANK_FG[2];
+        const static U64 BACK_RANK_B[2];
+        const static U64 BACK_RANK_C[2];
+        const static U64 BACK_RANK_D[2];
+        const static U64 BACK_RANK_E[2];
+        const static U64 BACK_RANK_F[2];
+        const static U64 BACK_RANK_G[2];
 
     private:
         U64 occupancy_bitboard_[2];

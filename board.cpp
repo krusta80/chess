@@ -63,3 +63,43 @@ U64 Board::getQueenBitboard(const int side) {
 U64 Board::getRookBitboard(const int side) {
     return pieces[ROOK_INDEX][side];
 }
+
+const U64 Board::BACK_RANK_BCD[] = {
+    0x000000000000000E,
+    0x0E00000000000000
+};
+
+const U64 Board::BACK_RANK_FG[]= {
+    0x0000000000000060,
+    0x6000000000000000
+};
+
+const U64 Board::BACK_RANK_B[] = {
+    0x0000000000000002,
+    0x0200000000000000
+};
+
+const U64 Board::BACK_RANK_C[] = {
+    0x0000000000000004,
+    0x0400000000000000
+};
+
+const U64 Board::BACK_RANK_D[] = {
+    0x0000000000000008,
+    0x0800000000000000
+};
+
+const U64 Board::BACK_RANK_E[] = {
+    0x0000000000000080,
+    0x8000000000000000
+};
+
+const U64 Board::BACK_RANK_F[] = {
+    0x0000000000000040,
+    0x4000000000000000
+};
+
+const U64 Board::BACK_RANK_G[] = {
+    0x0000000000000020,
+    0x2000000000000000
+};

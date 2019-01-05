@@ -21,6 +21,10 @@ class MoveGenerator {
       king_attacks_.Initialize();
       slider_attacks_.Initialize();
       previousBoard.initialize();
+      CASTLE_KINGSIDE_.push_back(new Move(4, 6, 1));
+      CASTLE_KINGSIDE_.push_back(new Move(60, 62, 1));
+      CASTLE_QUEENSIDE_.push_back(new Move(4, 2, 1));
+      CASTLE_QUEENSIDE_.push_back(new Move(60, 58, 1));
     }
 
     void generateAllMoves(Board& board, const int side) {
@@ -66,30 +70,30 @@ class MoveGenerator {
         if (board.never_castle_kingside[side]) {
             return;
         }
-        if ((board.occupancyBitboard() & 0x60) > 0) {
+        if ((board.occupancyBitboard() & Board::BACK_RANK_FG[side]) > 0) {
             return;
         }
-        if (isAttacked(board, 0x20, side) ||
-                isAttacked(board, 0x40, side) ||
-                isAttacked(board, 0x10, side)) {
+        if (isAttacked(board, Board::BACK_RANK_E[side], side) ||
+                isAttacked(board, Board::BACK_RANK_F[side], side) ||
+                isAttacked(board, Board::BACK_RANK_G[side], side)) {
             return;
         }
-        moveList.push_back(new Move(4, 6, Board::KING_INDEX));
+        moveList.push_back(CASTLE_KINGSIDE_.at(side));
     }
 
     void addQueensideCastlingIfLegal(Board& board, const int side) {
         if (board.never_castle_queenside[side]) {
             return;
         }
-        if ((board.occupancyBitboard() & 0xE) > 0) {
+        if ((board.occupancyBitboard() & Board::BACK_RANK_BCD[side]) > 0) {
             return;
         }
-        if (isAttacked(board, 0x8, side) ||
-                isAttacked(board, 0x4, side) ||
-                isAttacked(board, 0x10, side)) {
+        if (isAttacked(board, Board::BACK_RANK_C[side], side) ||
+                isAttacked(board, Board::BACK_RANK_D[side], side) ||
+                isAttacked(board, Board::BACK_RANK_E[side], side)) {
             return;
         }
-        moveList.push_back(new Move(4, 2, Board::KING_INDEX));
+        moveList.push_back(CASTLE_QUEENSIDE_.at(side));
     }
 
     void addAllKnightMoves(Board& board, const int side) {
@@ -248,6 +252,9 @@ class MoveGenerator {
 
     constexpr static int WHITE_ = 0;
     constexpr static int BLACK_ = 1;
+
+    std::vector<Move*> CASTLE_KINGSIDE_;
+    std::vector<Move*> CASTLE_QUEENSIDE_;
 
     Board previousBoard;
 

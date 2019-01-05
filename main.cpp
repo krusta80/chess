@@ -11,9 +11,9 @@ int main()
 
     board.initialize();
     board.pieces[Board::BISHOP_INDEX][0] = 1L<<0;
-    board.pieces[Board::BISHOP_INDEX][1] = 1L<<1;
+    board.pieces[Board::BISHOP_INDEX][1] = 1L<<37;
 
-    board.pieces[Board::KING_INDEX][0] = 1L<<8;
+    board.pieces[Board::KING_INDEX][0] = 1L<<4;
     board.pieces[Board::KING_INDEX][1] = 1L<<56;
 
     board.pieces[Board::KNIGHT_INDEX][0] = 1L<<11;
@@ -21,6 +21,8 @@ int main()
 
     board.pieces[Board::PAWN_INDEX][0] = ((1L<<10)|(1L<<28));
     board.pieces[Board::PAWN_INDEX][1] = ((1L<<19)|(1L<<17));
+
+    board.pieces[Board::ROOK_INDEX][0] = ((1L<<0)|(1L<<7));
 
     board.updateOccupancyBitboard();
     Bit::printBoard(board.sideBitboard(0));
