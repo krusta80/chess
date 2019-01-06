@@ -6,7 +6,6 @@ CONFIG -= qt
 SOURCES += \
         main.cpp \
     magic-bits/src/slider_attacks.cpp \
-    move_generator.cpp \
     move.cpp \
     board.cpp \
     king_attacks.cpp

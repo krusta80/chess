@@ -163,8 +163,26 @@ class MoveGenerator {
             previousBoard.pieces[i][1-side] = board.pieces[i][1-side];
             board.pieces[i][1-side] &= ~destinationMask;
         }
-        if (move->specialMove == Move::EN_PASSANT) {
-            board.pieces[Board::PAWN_INDEX][1-side] &= ~board.enPassantTarget;
+        switch (move->specialMove) {
+            case Move::EN_PASSANT:
+                board.pieces[Board::PAWN_INDEX][1-side] &= ~board.enPassantTarget;
+                break;
+            case Move::PROMOTE_TO_QUEEN:
+                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
+                board.pieces[Board::QUEEN_INDEX][side] |= destinationMask;
+                break;
+            case Move::PROMOTE_TO_ROOK:
+                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
+                board.pieces[Board::ROOK_INDEX][side] |= destinationMask;
+                break;
+            case Move::PROMOTE_TO_BISHOP:
+                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
+                board.pieces[Board::BISHOP_INDEX][side] |= destinationMask;
+                break;
+            case Move::PROMOTE_TO_KNIGHT:
+                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
+                board.pieces[Board::KNIGHT_INDEX][side] |= destinationMask;
+                break;
         }
         board.updateOccupancyBitboard();
     }
@@ -174,6 +192,24 @@ class MoveGenerator {
         U64 destinationMask = 1L<<move->destination;
 
         board.pieces[move->piece][side] ^= (originMask | destinationMask);
+        switch (move->specialMove) {
+            case Move::PROMOTE_TO_QUEEN:
+                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
+                board.pieces[Board::QUEEN_INDEX][side] ^= destinationMask;
+                break;
+            case Move::PROMOTE_TO_ROOK:
+                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
+                board.pieces[Board::ROOK_INDEX][side] ^= destinationMask;
+                break;
+            case Move::PROMOTE_TO_BISHOP:
+                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
+                board.pieces[Board::BISHOP_INDEX][side] ^= destinationMask;
+                break;
+            case Move::PROMOTE_TO_KNIGHT:
+                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
+                board.pieces[Board::KNIGHT_INDEX][side] ^= destinationMask;
+                break;
+        }
         for (int i = 0; i < 6; i++) {
             board.pieces[i][1-side] = previousBoard.pieces[i][1-side];
         }
@@ -211,7 +247,7 @@ class MoveGenerator {
     }
 
     void addKnightMoves(Board& board, const int knight_index, const int side) {
-        U64 knight_attacks = knight_attacks_.Attacks(1<<knight_index);
+        U64 knight_attacks = knight_attacks_.Attacks(1L<<knight_index);
 
         knight_attacks &= ~board.sideBitboard(side);
         addMovesFromAttackBitboard(knight_attacks, knight_index, Board::KNIGHT_INDEX, Move::STANDARD);

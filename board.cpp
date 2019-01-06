@@ -15,6 +15,32 @@ void Board::initialize() {
     }
 }
 
+void Board::printBoard() {
+    for (int i = 7; i >= 0; i--) {
+        for (int j = 0; j < 8; j++) {
+            std::cout << getSquareNotation(i*8+j);
+        }
+        std::cout << std::endl;
+    }
+}
+
+char Board::getSquareNotation(const int index) {
+    U64 mask = 1L<<index;
+
+    if ((occupancyBitboard() & mask) == 0) {
+        return '.';
+    }
+    for (int p = 0; p < 6; p++) {
+        if ((pieces[p][0] & mask) > 0) {
+            if (p == Board::PAWN_INDEX) return 'P';
+            return PIECE_NOTATION[p];
+        } else if ((pieces[p][1] & mask) > 0) {
+            if (p == Board::PAWN_INDEX) return 'p';
+            return PIECE_NOTATION[p] + 32;
+        }
+    }
+}
+
 U64 Board::sideBitboard(const int side) {
     return occupancy_bitboard_[side];
 }
@@ -63,6 +89,8 @@ U64 Board::getQueenBitboard(const int side) {
 U64 Board::getRookBitboard(const int side) {
     return pieces[ROOK_INDEX][side];
 }
+
+const char Board::PIECE_NOTATION[] = {'B', 'K', 'N', '\0', 'Q', 'R'};
 
 const U64 Board::BACK_RANK_BCD[] = {
     0x000000000000000E,

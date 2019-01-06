@@ -7,6 +7,7 @@ class Board
 {
     public:
         void initialize();
+        void printBoard();
 
         // Occupancy
         U64 sideBitboard(const int side);
@@ -34,6 +35,8 @@ class Board
         constexpr static int QUEEN_INDEX = 4;
         constexpr static int ROOK_INDEX = 5;
 
+        const static char PIECE_NOTATION[6];
+
         // Castling
         bool never_castle_kingside[2];
         bool never_castle_queenside[2];
@@ -52,6 +55,8 @@ class Board
         U64 enPassantTarget;
 
     private:
+        char getSquareNotation(const int index);
+
         U64 occupancy_bitboard_[2];
 };
 

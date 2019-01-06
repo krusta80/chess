@@ -27,9 +27,7 @@ int main()
     board.pieces[Board::ROOK_INDEX][0] = 1L<<27;  // d4
 
     board.updateOccupancyBitboard();
-    Bit::printBoard(board.sideBitboard(0));
-    std::cout << std::endl;
-    Bit::printBoard(board.sideBitboard(1));
+    board.printBoard();
     std::cout << std::endl;
     moveGenerator->generateAllMoves(board, 1);
 
