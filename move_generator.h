@@ -58,7 +58,7 @@ class MoveGenerator {
     void addKingAttacks(U64 friendlyPieces, const int kingIndex) {
         U64 kingAttacks = king_attacks_.Attacks(friendlyPieces, kingIndex);
 
-        addMovesFromAttackBitboard(kingAttacks, kingIndex, Board::KING_INDEX);
+        addMovesFromAttackBitboard(kingAttacks, kingIndex, Board::KING_INDEX, Move::STANDARD_MOVE);
     }
 
     void addCastlingIfLegal(Board& board, const int side) {
@@ -206,14 +206,14 @@ class MoveGenerator {
         U64 bishopAttacks = slider_attacks_.BishopAttacks(allPieces, bishopIndex);
 
         bishopAttacks &= ~friendlyPieces;
-        addMovesFromAttackBitboard(bishopAttacks, bishopIndex, Board::BISHOP_INDEX);
+        addMovesFromAttackBitboard(bishopAttacks, bishopIndex, Board::BISHOP_INDEX, Move::STANDARD_MOVE);
     }
 
     void addKnightMoves(Board& board, const int knight_index, const int side) {
         U64 knight_attacks = knight_attacks_.Attacks(1<<knight_index);
 
         knight_attacks &= ~board.sideBitboard(side);
-        addMovesFromAttackBitboard(knight_attacks, knight_index, Board::KNIGHT_INDEX);
+        addMovesFromAttackBitboard(knight_attacks, knight_index, Board::KNIGHT_INDEX, Move::STANDARD_MOVE);
     }
 
     void addPawnMoves(Board& board, const int pawn_index, const int side) {
@@ -223,33 +223,53 @@ class MoveGenerator {
             case WHITE_:
               pawn_moves = pawn_moves_.WhiteMoves(
                             1L<<pawn_index,
-                            ((~board.occupancyBitboard())|board.enPassantDestination));
+                            ~board.occupancyBitboard());
               break;
             case BLACK_:
               pawn_moves = pawn_moves_.BlackMoves(
                             1L<<pawn_index,
-                           ((~board.occupancyBitboard())|board.enPassantDestination));
+                            ~board.occupancyBitboard());
         }
-        addMovesFromAttackBitboard(pawn_moves, pawn_index, Board::PAWN_INDEX);
+        addMovesFromAttackBitboard(pawn_moves, pawn_index, Board::PAWN_INDEX, Move::STANDARD_MOVE);
+    }
+
+    void addEnPassantMoves(Board& board, const int pawn_index, const int side) {
+        U64 pawn_moves = 0;
+
+        switch (side) {
+            case WHITE_:
+              pawn_moves = pawn_moves_.WhiteMoves(
+                            1L<<pawn_index,
+                            ~board.enPassantDestination);
+              break;
+            case BLACK_:
+              pawn_moves = pawn_moves_.BlackMoves(
+                            1L<<pawn_index,
+                            ~board.enPassantDestination);
+        }
+        addMovesFromAttackBitboard(pawn_moves, pawn_index, Board::PAWN_INDEX, Move::EN_PASSANT);
     }
 
     void addQueenMoves(Board& board, const int queen_index, const int side) {
         U64 queen_attacks = slider_attacks_.QueenAttacks(board.occupancyBitboard(),
                                                        queen_index);
         queen_attacks &= ~board.sideBitboard(side);
-        addMovesFromAttackBitboard(queen_attacks, queen_index, Board::QUEEN_INDEX);
+        addMovesFromAttackBitboard(queen_attacks, queen_index, Board::QUEEN_INDEX, Move::STANDARD_MOVE);
     }
 
     void addRookMoves(Board& board, const int rook_index, const int side) {
         U64 rook_attacks = slider_attacks_.RookAttacks(board.occupancyBitboard(),
                                                        rook_index);
         rook_attacks &= ~board.sideBitboard(side);
-        addMovesFromAttackBitboard(rook_attacks, rook_index, Board::ROOK_INDEX);
+        addMovesFromAttackBitboard(rook_attacks, rook_index, Board::ROOK_INDEX, Move::STANDARD_MOVE);
     }
 
-    void addMovesFromAttackBitboard(U64 bitboard, const int piece_index, const int piece_type) {
+    void addMovesFromAttackBitboard(U64 bitboard,
+                                    const int piece_index,
+                                    const int piece_type,
+                                    const int moveType) {
         while (bitboard > 0) {
-            moveList.push_back(new Move(piece_index, Bit().Pop(bitboard), piece_type, Move::STANDARD_MOVE));
+            moveList.push_back(new Move(piece_index, Bit().Pop(bitboard), piece_type, moveType));
         }
     }
 
