@@ -20,7 +20,7 @@ int main()
     board.pieces[Board::KNIGHT_INDEX][1] = 1L<<46;
 
     board.pieces[Board::PAWN_INDEX][0] = ((1L<<25)|(1L<<28));
-    board.pieces[Board::PAWN_INDEX][1] = (1L<<26);
+    board.pieces[Board::PAWN_INDEX][1] = ((1L<<26)|(1L<<15));
     board.enPassantTarget = 1L<<25;
     board.enPassantDestination = 1L<<17;
 
@@ -34,6 +34,6 @@ int main()
     moveGenerator->generateAllMoves(board, 1);
 
     for (std::vector<Move*>::iterator i = moveGenerator->moveList.begin(); i != moveGenerator->moveList.end(); ++i) {
-        std::cout << std::dec << (*i)->origin << "," << std::dec << (*i)->destination << std::endl;
+        (*i)->printMove();
     }
 }

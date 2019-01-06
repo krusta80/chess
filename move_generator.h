@@ -58,7 +58,7 @@ class MoveGenerator {
     void addKingAttacks(U64 friendlyPieces, const int kingIndex) {
         U64 kingAttacks = king_attacks_.Attacks(friendlyPieces, kingIndex);
 
-        addMovesFromAttackBitboard(kingAttacks, kingIndex, Board::KING_INDEX, Move::STANDARD_MOVE);
+        addMovesFromAttackBitboard(kingAttacks, kingIndex, Board::KING_INDEX, Move::STANDARD);
     }
 
     void addCastlingIfLegal(Board& board, const int side) {
@@ -207,14 +207,14 @@ class MoveGenerator {
         U64 bishopAttacks = slider_attacks_.BishopAttacks(allPieces, bishopIndex);
 
         bishopAttacks &= ~friendlyPieces;
-        addMovesFromAttackBitboard(bishopAttacks, bishopIndex, Board::BISHOP_INDEX, Move::STANDARD_MOVE);
+        addMovesFromAttackBitboard(bishopAttacks, bishopIndex, Board::BISHOP_INDEX, Move::STANDARD);
     }
 
     void addKnightMoves(Board& board, const int knight_index, const int side) {
         U64 knight_attacks = knight_attacks_.Attacks(1<<knight_index);
 
         knight_attacks &= ~board.sideBitboard(side);
-        addMovesFromAttackBitboard(knight_attacks, knight_index, Board::KNIGHT_INDEX, Move::STANDARD_MOVE);
+        addMovesFromAttackBitboard(knight_attacks, knight_index, Board::KNIGHT_INDEX, Move::STANDARD);
     }
 
     void addPawnMoves(Board& board, const int pawn_index, const int side) {
@@ -231,7 +231,7 @@ class MoveGenerator {
                             1L<<pawn_index,
                             ~board.occupancyBitboard());
         }
-        addMovesFromAttackBitboard(pawn_moves, pawn_index, Board::PAWN_INDEX, Move::STANDARD_MOVE);
+        addMovesFromAttackBitboard(pawn_moves, pawn_index, Board::PAWN_INDEX, Move::STANDARD);
     }
 
     void addEnPassantMoves(Board& board, const int pawn_index, const int side) {
@@ -255,23 +255,37 @@ class MoveGenerator {
         U64 queen_attacks = slider_attacks_.QueenAttacks(board.occupancyBitboard(),
                                                        queen_index);
         queen_attacks &= ~board.sideBitboard(side);
-        addMovesFromAttackBitboard(queen_attacks, queen_index, Board::QUEEN_INDEX, Move::STANDARD_MOVE);
+        addMovesFromAttackBitboard(queen_attacks, queen_index, Board::QUEEN_INDEX, Move::STANDARD);
     }
 
     void addRookMoves(Board& board, const int rook_index, const int side) {
         U64 rook_attacks = slider_attacks_.RookAttacks(board.occupancyBitboard(),
                                                        rook_index);
         rook_attacks &= ~board.sideBitboard(side);
-        addMovesFromAttackBitboard(rook_attacks, rook_index, Board::ROOK_INDEX, Move::STANDARD_MOVE);
+        addMovesFromAttackBitboard(rook_attacks, rook_index, Board::ROOK_INDEX, Move::STANDARD);
     }
 
     void addMovesFromAttackBitboard(U64 bitboard,
-                                    const int piece_index,
-                                    const int piece_type,
+                                    const int pieceIndex,
+                                    const int pieceType,
                                     const int moveType) {
+        int destinationIndex;
         while (bitboard > 0) {
-            moveList.push_back(new Move(piece_index, Bit().Pop(bitboard), piece_type, moveType));
+            destinationIndex = Bit().Pop(bitboard);
+            if (pieceType == Board::PAWN_INDEX &&
+                    (destinationIndex < 8 || destinationIndex > 55)) {
+                addPromotionsToMoveList(pieceIndex, destinationIndex);
+            } else {
+                moveList.push_back(new Move(pieceIndex, destinationIndex, pieceType, moveType));
+            }
         }
+    }
+
+    void addPromotionsToMoveList(const int origin, const int dest) {
+        moveList.push_back(new Move(origin, dest, Board::PAWN_INDEX, Move::PROMOTE_TO_QUEEN));
+        moveList.push_back(new Move(origin, dest, Board::PAWN_INDEX, Move::PROMOTE_TO_ROOK));
+        moveList.push_back(new Move(origin, dest, Board::PAWN_INDEX, Move::PROMOTE_TO_BISHOP));
+        moveList.push_back(new Move(origin, dest, Board::PAWN_INDEX, Move::PROMOTE_TO_KNIGHT));
     }
 
     constexpr static int WHITE_ = 0;
