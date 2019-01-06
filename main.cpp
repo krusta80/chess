@@ -14,7 +14,7 @@ int main()
     board.pieces[Board::BISHOP_INDEX][1] = 1L<<37;
 
     board.pieces[Board::KING_INDEX][0] = 1L<<4;
-    board.pieces[Board::KING_INDEX][1] = 1L<<24; // a4
+    board.pieces[Board::KING_INDEX][1] = 1L<<61; // a4
 
     board.pieces[Board::KNIGHT_INDEX][0] = 1L<<11;
     board.pieces[Board::KNIGHT_INDEX][1] = 1L<<46;

@@ -108,6 +108,7 @@ class MoveGenerator {
         U64 bitboard = board.getPawnBitboard(side);
 
         while (bitboard > 0) {
+             addEnPassantMoves(board, __builtin_ffsll(bitboard)-1, side);
              addPawnMoves(board, Bit().Pop(bitboard), side);
         }
     }
@@ -238,12 +239,12 @@ class MoveGenerator {
 
         switch (side) {
             case WHITE_:
-              pawn_moves = pawn_moves_.WhiteMoves(
+              pawn_moves = pawn_moves_.WhiteAttacks(
                             1L<<pawn_index,
                             ~board.enPassantDestination);
               break;
             case BLACK_:
-              pawn_moves = pawn_moves_.BlackMoves(
+              pawn_moves = pawn_moves_.BlackAttacks(
                             1L<<pawn_index,
                             ~board.enPassantDestination);
         }
