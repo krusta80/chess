@@ -9,6 +9,9 @@ class Board
         void initialize();
         void printBoard();
 
+        // Spaces (Notation, etc)
+        const static char* SQUARE_LABELS[64];
+
         // Occupancy
         U64 sideBitboard(const int side);
         U64 whiteBitboard();

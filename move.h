@@ -13,24 +13,7 @@ class Move
             this->specialMove = specialMove;
         }
 
-        void printMove() {
-            std::cout << std::dec << origin << "," << std::dec << destination;
-            switch (specialMove) {
-                case PROMOTE_TO_QUEEN:
-                    std::cout << " (Q)";
-                    break;
-                case PROMOTE_TO_ROOK:
-                    std::cout << " (R)";
-                    break;
-                case PROMOTE_TO_BISHOP:
-                    std::cout << " (B)";
-                    break;
-                case PROMOTE_TO_KNIGHT:
-                    std::cout << " (N)";
-                    break;
-            }
-            std::cout << std::endl;
-        }
+        void printMove();
 
         int origin;
         int destination;
