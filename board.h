@@ -31,6 +31,15 @@ class Board
         U64 getQueenBitboard(const int side);
         U64 getRookBitboard(const int side);
 
+        constexpr static int PIECE_VALUES[6] = {
+            300,        // Bishop
+            999999,     // King
+            300,        // Knight
+            100,        // Pawn
+            900,        // Queen
+            500         // Rook
+        };
+
         constexpr static int BISHOP_INDEX = 0;
         constexpr static int KING_INDEX = 1;
         constexpr static int KNIGHT_INDEX = 2;
