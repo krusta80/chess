@@ -3,37 +3,13 @@
 #include "bit.h"
 #include "board.h"
 #include "evaluation_function.h"
+#include "game.h"
 #include "move_generator.h"
 
 int main()
 {
     MoveGenerator* moveGenerator = new MoveGenerator();
-    Board board;
+    Game* game = new Game(1, 1, *moveGenerator);
 
-    board.initialize();
-    board.pieces[Board::BISHOP_INDEX][0] = 1L<<0;
-    board.pieces[Board::BISHOP_INDEX][1] = 1L<<37;
-
-    board.pieces[Board::KING_INDEX][0] = 1L<<45;
-    board.pieces[Board::KING_INDEX][1] = 1L<<61;
-
-    board.pieces[Board::KNIGHT_INDEX][0] = 1L<<11;
-    board.pieces[Board::KNIGHT_INDEX][1] = 1L<<46;
-
-    board.pieces[Board::PAWN_INDEX][0] = ((1L<<25)|(1L<<28));
-    board.pieces[Board::PAWN_INDEX][1] = ((1L<<26)|(1L<<15));
-    board.enPassantTarget = 1L<<25;
-    board.enPassantDestination = 1L<<17;
-
-    board.pieces[Board::ROOK_INDEX][0] = 1L<<59;
-
-    board.updateOccupancyBitboard();
-    board.printBoard();
-    std::cout << std::endl;
-    moveGenerator->generateAllMoves(board, 1);
-
-    for (std::vector<Move*>::iterator i = moveGenerator->moveList.begin(); i != moveGenerator->moveList.end(); ++i) {
-        (*i)->printMove();
-    }
-    std::cout << EvaluationFunction::evaluate(board, *moveGenerator, 1) << std::endl;
+    game->printMoveList();
 }

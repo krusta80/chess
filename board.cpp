@@ -9,10 +9,20 @@ void Board::initialize() {
     never_castle_queenside[0] = false;
     never_castle_queenside[1] = false;
 
-    for (int i = 0; i < 6; i++) {
-        pieces[i][0] = 0ULL;
-        pieces[i][1] = 0ULL;
-    }
+    // Setup new board
+    pieces[0][0] = (Board::BACK_RANK_C[0] | Board::BACK_RANK_F[0]);
+    pieces[0][1] = (Board::BACK_RANK_C[1] | Board::BACK_RANK_F[1]);
+    pieces[1][0] = Board::BACK_RANK_E[0];
+    pieces[1][1] = Board::BACK_RANK_E[1];
+    pieces[2][0] = (Board::BACK_RANK_B[0] | Board::BACK_RANK_G[0]);
+    pieces[2][1] = (Board::BACK_RANK_B[1] | Board::BACK_RANK_G[1]);
+    pieces[3][0] = 0x000000000000FF00;
+    pieces[3][1] = 0x00FF000000000000;
+    pieces[4][0] = Board::BACK_RANK_D[0];
+    pieces[4][1] = Board::BACK_RANK_D[1];
+    pieces[5][0] = (Board::BACK_RANK_A[0] | Board::BACK_RANK_H[0]);
+    pieces[5][1] = (Board::BACK_RANK_A[1] | Board::BACK_RANK_H[1]);
+    updateOccupancyBitboard();
 }
 
 void Board::printBoard() {
@@ -102,6 +112,11 @@ const U64 Board::BACK_RANK_FG[]= {
     0x6000000000000000
 };
 
+const U64 Board::BACK_RANK_A[] = {
+    0x0000000000000001,
+    0x0100000000000000
+};
+
 const U64 Board::BACK_RANK_B[] = {
     0x0000000000000002,
     0x0200000000000000
@@ -118,18 +133,23 @@ const U64 Board::BACK_RANK_D[] = {
 };
 
 const U64 Board::BACK_RANK_E[] = {
-    0x0000000000000080,
-    0x8000000000000000
+    0x0000000000000010,
+    0x1000000000000000
 };
 
 const U64 Board::BACK_RANK_F[] = {
+    0x0000000000000020,
+    0x2000000000000000
+};
+
+const U64 Board::BACK_RANK_G[] = {
     0x0000000000000040,
     0x4000000000000000
 };
 
-const U64 Board::BACK_RANK_G[] = {
-    0x0000000000000020,
-    0x2000000000000000
+const U64 Board::BACK_RANK_H[] = {
+    0x0000000000000080,
+    0x8000000000000000
 };
 
 const char* Board::SQUARE_LABELS[] = {

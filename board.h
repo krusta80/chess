@@ -48,12 +48,14 @@ class Board
 
         const static U64 BACK_RANK_BCD[2];
         const static U64 BACK_RANK_FG[2];
+        const static U64 BACK_RANK_A[2];
         const static U64 BACK_RANK_B[2];
         const static U64 BACK_RANK_C[2];
         const static U64 BACK_RANK_D[2];
         const static U64 BACK_RANK_E[2];
         const static U64 BACK_RANK_F[2];
         const static U64 BACK_RANK_G[2];
+        const static U64 BACK_RANK_H[2];
 
         // En Passant
         U64 enPassantDestination;
