@@ -10,6 +10,17 @@ class Bit
 {
     public:
         static int
+        countBits(U64 &bb) {
+            int count = 0;
+
+            while (bb > 0) {
+                Pop(bb);
+                count++;
+            }
+            return count;
+        }
+
+        static int
         Pop(U64 &bb) { // also called dropForward
             int idx = __builtin_ffsll(bb)-1;
             bb &= bb - 1; // reset bit outside

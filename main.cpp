@@ -2,6 +2,7 @@
 
 #include "bit.h"
 #include "board.h"
+#include "evaluation_function.h"
 #include "move_generator.h"
 
 int main()
@@ -13,8 +14,8 @@ int main()
     board.pieces[Board::BISHOP_INDEX][0] = 1L<<0;
     board.pieces[Board::BISHOP_INDEX][1] = 1L<<37;
 
-    board.pieces[Board::KING_INDEX][0] = 1L<<4;
-    board.pieces[Board::KING_INDEX][1] = 1L<<61; // a4
+    board.pieces[Board::KING_INDEX][0] = 1L<<45;
+    board.pieces[Board::KING_INDEX][1] = 1L<<61;
 
     board.pieces[Board::KNIGHT_INDEX][0] = 1L<<11;
     board.pieces[Board::KNIGHT_INDEX][1] = 1L<<46;
@@ -24,7 +25,7 @@ int main()
     board.enPassantTarget = 1L<<25;
     board.enPassantDestination = 1L<<17;
 
-    board.pieces[Board::ROOK_INDEX][0] = 1L<<27;  // d4
+    board.pieces[Board::ROOK_INDEX][0] = 1L<<59;
 
     board.updateOccupancyBitboard();
     board.printBoard();
@@ -34,4 +35,5 @@ int main()
     for (std::vector<Move*>::iterator i = moveGenerator->moveList.begin(); i != moveGenerator->moveList.end(); ++i) {
         (*i)->printMove();
     }
+    std::cout << EvaluationFunction::evaluate(board, *moveGenerator, 1) << std::endl;
 }

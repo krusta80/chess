@@ -43,6 +43,10 @@ class MoveGenerator {
         removeIllegalMoves(board, side);
     }
 
+    bool isInCheck(Board& board, const int side) {
+        return isAttacked(board, board.getKingBitboard(side), side);
+    }
+
   private:
     void addAllBishopMoves(Board& board, const int side) {
         U64 bitboard = board.getBishopBitboard(side);
@@ -216,10 +220,6 @@ class MoveGenerator {
         board.updateOccupancyBitboard();
     }
 
-    bool isInCheck(Board& board, const int side) {
-        return isAttacked(board, board.getKingBitboard(side), side);
-    }
-
     bool isAttacked(Board& board, U64 square_bitboard, int side) {
         // TODO(jgruska): Speed this up.
         const int index =  __builtin_ffsll(square_bitboard)-1;
@@ -230,7 +230,7 @@ class MoveGenerator {
         U64 knight_checks = knight_attacks_.Attacks(square_bitboard);
         U64 pawn_checks = pawn_moves_.Attacks(square_bitboard,
                                               ~board.getPawnBitboard(1-side), side);
-        U64 king_checks = king_attacks_.Attacks(board.getKingBitboard(1-side), index);
+        U64 king_checks = king_attacks_.Attacks(board.getKingBitboard(side), index);
 
         bishop_checks &= (board.getBishopBitboard(1-side) | board.getQueenBitboard(1-side));
         king_checks &= (board.getKingBitboard(1-side));

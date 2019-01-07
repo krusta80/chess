@@ -8,7 +8,8 @@ SOURCES += \
     magic-bits/src/slider_attacks.cpp \
     move.cpp \
     board.cpp \
-    king_attacks.cpp
+    king_attacks.cpp \
+    evaluation_function.cpp
 
 HEADERS += \
     magic-bits/src/common.h \
@@ -19,7 +20,8 @@ HEADERS += \
     bit.h \
     king_attacks.h \
     pawn_moves.h \
-    knight_attacks.h
+    knight_attacks.h \
+    evaluation_function.h
 
 DISTFILES += \
     magic-bits/magics/bishop_attack_table.magic \

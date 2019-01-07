@@ -132,7 +132,7 @@ const U64 Board::BACK_RANK_G[] = {
     0x2000000000000000
 };
 
-const char* Board::SQUARE_LABELS[] {
+const char* Board::SQUARE_LABELS[] = {
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
     "a2", "b2", "c2", "d2", "e2", "f2", "g2", "h2",
     "a3", "b3", "c3", "d3", "e3", "f3", "g3", "h3",
@@ -141,4 +141,13 @@ const char* Board::SQUARE_LABELS[] {
     "a6", "b6", "c6", "d6", "e6", "f6", "g6", "h6",
     "a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7",
     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"
+};
+
+const int Board::PIECE_VALUES[] = {
+   300,        // Bishop
+   999999,     // King
+   300,        // Knight
+   100,        // Pawn
+   900,        // Queen
+   500         // Rook
 };
