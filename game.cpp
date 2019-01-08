@@ -4,6 +4,8 @@
 
 #include <vector>
 
+#include <iostream>
+
 Game::Game(const int whitePlayerType, const int blackPlayerType, MoveGenerator& moveGenerator) {
     // Game state
     GAME_OVER = false;
@@ -41,6 +43,10 @@ void Game::play() {
         }
         makeMove(*currentMove);
     }
+    std::cout << "GAME OVER: ";
+    if (moveGenerator->isInCheck(board, sideToMove)) {
+        std::cout << (sideToMove == WHITE ? "White Wins!" : "DRAW") << std::endl;
+    }
 }
 
 void Game::inputMove() {
@@ -76,12 +82,12 @@ void Game::printEvaluation() {
 }
 
 void Game::makeMove(Move move) {
-    // TODO(jgruska): Add validity check
     moveHistory.push_back(new Move(move));
     boardHistory.push_back(new Board(board));
-    board.makeMove(&move, sideToMove);
+    board.makeMove(&move, sideToMove, /* tryOnly */ false);
     sideToMove = 1 - sideToMove;
     moveGenerator->generateAllMoves(board, sideToMove);
+    GAME_OVER = moveGenerator->moveList.size() == 0;
 
     board.printBoard();
     printMoveList();

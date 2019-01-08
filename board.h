@@ -44,7 +44,7 @@ class Board
         const static char PIECE_NOTATION[6];
 
         // Moves
-        void makeMove(Move* move, const int side);
+        void makeMove(Move* move, const int side, const bool tryOnly);
 
         // Castling
         bool never_castle_kingside[2];
@@ -64,6 +64,9 @@ class Board
         // En Passant
         U64 enPassantDestination;
         U64 enPassantTarget;
+
+        const static U64 SECOND_RANK[2];
+        const static U64 FOURTH_RANK[2];
 
     private:
         char getSquareNotation(const int index);

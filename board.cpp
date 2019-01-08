@@ -76,7 +76,7 @@ void Board::updateOccupancyBitboard() {
     }
 }
 
-void Board::makeMove(Move* move, const int side) {
+void Board::makeMove(Move* move, const int side, const bool tryOnly) {
     U64 originMask = 1L << move->origin;
     U64 destinationMask = 1L << move->destination;
 
@@ -85,6 +85,12 @@ void Board::makeMove(Move* move, const int side) {
         pieces[i][1-side] &= ~destinationMask;
     }
     switch (move->specialMove) {
+        case Move::CASTLE_KINGSIDE:
+            pieces[ROOK_INDEX][side] ^= (BACK_RANK_F[side] | BACK_RANK_H[side]);
+            break;
+        case Move::CASTLE_QUEENSIDE:
+            pieces[ROOK_INDEX][side] ^= (BACK_RANK_A[side] | BACK_RANK_D[side]);
+            break;
         case Move::EN_PASSANT:
             pieces[PAWN_INDEX][1-side] &= ~enPassantTarget;
             break;
@@ -104,6 +110,31 @@ void Board::makeMove(Move* move, const int side) {
             pieces[PAWN_INDEX][side] ^= destinationMask;
             pieces[KNIGHT_INDEX][side] |= destinationMask;
             break;
+    }
+
+    if (!tryOnly) {
+        enPassantTarget = 0ULL;
+        enPassantDestination = 0ULL;
+        switch (move->piece) {
+            case PAWN_INDEX:
+                if (((1L<<move->origin) & SECOND_RANK[side]) > 0 &&
+                        ((1L<<move->destination) & FOURTH_RANK[side]) > 0) {
+                    enPassantTarget = 1L << move->destination;
+                    enPassantDestination = 1L << ((move->origin+move->destination)/2);
+                }
+                break;
+            case ROOK_INDEX:
+                if (((1L<<move->origin) & BACK_RANK_A[side]) > 0) {
+                    never_castle_queenside[side] = true;
+                } else if(((1L<<move->origin) & BACK_RANK_H[side]) > 0) {
+                    never_castle_kingside[side] = true;
+                }
+                break;
+            case KING_INDEX:
+                never_castle_kingside[side] = true;
+                never_castle_queenside[side] = true;
+            break;
+        }
     }
     updateOccupancyBitboard();
 }
@@ -182,6 +213,16 @@ const U64 Board::BACK_RANK_G[] = {
 const U64 Board::BACK_RANK_H[] = {
     0x0000000000000080,
     0x8000000000000000
+};
+
+const U64 Board::SECOND_RANK[] = {
+    0x000000000000FF00,
+    0x00FF000000000000
+};
+
+const U64 Board::FOURTH_RANK[] = {
+    0x00000000FF000000,
+    0x000000FF00000000
 };
 
 const char* Board::SQUARE_LABELS[] = {

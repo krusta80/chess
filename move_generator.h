@@ -163,7 +163,7 @@ class MoveGenerator {
             previousBoard.pieces[i][side] = board.pieces[i][side];
             previousBoard.pieces[i][1-side] = board.pieces[i][1-side];
         }
-        board.makeMove(move, side);
+        board.makeMove(move, side, /* tryOnly */ true);
     }
 
     void untryMove(Board& board, const int side) {
@@ -214,12 +214,12 @@ class MoveGenerator {
             case WHITE_:
               pawn_moves = pawn_moves_.WhiteMoves(
                             1L<<pawn_index,
-                            ~board.occupancyBitboard());
+                            ~board.sideBitboard(1-side));
               break;
             case BLACK_:
               pawn_moves = pawn_moves_.BlackMoves(
                             1L<<pawn_index,
-                            ~board.occupancyBitboard());
+                            ~board.sideBitboard(1-side));
         }
         addMovesFromAttackBitboard(pawn_moves, pawn_index, Board::PAWN_INDEX, Move::STANDARD);
     }

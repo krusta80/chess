@@ -18,6 +18,9 @@ class Game
         int sideToMove;
         bool GAME_OVER;
 
+        constexpr static int WHITE = 0;
+        constexpr static int BLACK = 1;
+
     private:
         // Moves
         bool isValidMove(char* candidate);
