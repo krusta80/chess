@@ -45,7 +45,9 @@ void Game::play() {
     }
     std::cout << "GAME OVER: ";
     if (moveGenerator->isInCheck(board, sideToMove)) {
-        std::cout << (sideToMove == WHITE ? "White Wins!" : "DRAW") << std::endl;
+        std::cout << (sideToMove == BLACK ? "White Wins!" : "Black Wins!") << std::endl;
+    } else {
+        std::cout << "DRAW!" << std::endl;
     }
 }
 
