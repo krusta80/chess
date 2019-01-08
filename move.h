@@ -13,6 +13,7 @@ class Move
             this->specialMove = specialMove;
         }
 
+        char* getMoveNotation();
         void printMove();
 
         int origin;

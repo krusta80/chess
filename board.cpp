@@ -76,6 +76,38 @@ void Board::updateOccupancyBitboard() {
     }
 }
 
+void Board::makeMove(Move* move, const int side) {
+    U64 originMask = 1L << move->origin;
+    U64 destinationMask = 1L << move->destination;
+
+    pieces[move->piece][side] ^= (originMask | destinationMask);
+    for (int i = 0; i < 6; i++) {
+        pieces[i][1-side] &= ~destinationMask;
+    }
+    switch (move->specialMove) {
+        case Move::EN_PASSANT:
+            pieces[PAWN_INDEX][1-side] &= ~enPassantTarget;
+            break;
+        case Move::PROMOTE_TO_QUEEN:
+            pieces[PAWN_INDEX][side] ^= destinationMask;
+            pieces[QUEEN_INDEX][side] |= destinationMask;
+            break;
+        case Move::PROMOTE_TO_ROOK:
+            pieces[PAWN_INDEX][side] ^= destinationMask;
+            pieces[ROOK_INDEX][side] |= destinationMask;
+            break;
+        case Move::PROMOTE_TO_BISHOP:
+            pieces[PAWN_INDEX][side] ^= destinationMask;
+            pieces[BISHOP_INDEX][side] |= destinationMask;
+            break;
+        case Move::PROMOTE_TO_KNIGHT:
+            pieces[PAWN_INDEX][side] ^= destinationMask;
+            pieces[KNIGHT_INDEX][side] |= destinationMask;
+            break;
+    }
+    updateOccupancyBitboard();
+}
+
 U64 Board::getBishopBitboard(const int side) {
     return pieces[BISHOP_INDEX][side];
 }

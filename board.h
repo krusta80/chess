@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include "magic-bits/src/common.h"
+#include "move.h"
 
 class Board
 {
@@ -41,6 +42,9 @@ class Board
         constexpr static int ROOK_INDEX = 5;
 
         const static char PIECE_NOTATION[6];
+
+        // Moves
+        void makeMove(Move* move, const int side);
 
         // Castling
         bool never_castle_kingside[2];

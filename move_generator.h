@@ -154,67 +154,21 @@ class MoveGenerator {
         if (isInCheck(board, side)) {
             isIllegal = true;
         }
-        untryMove(move, board, side);
+        untryMove(board, side);
         return isIllegal;
     }
 
     void tryMove(Move* move, Board& board, const int side) {
-        U64 originMask = (0ULL | 1L<<move->origin);
-        U64 destinationMask = (0ULL | 1L<<move->destination);
-
-        board.pieces[move->piece][side] ^= (originMask | destinationMask);
         for (int i = 0; i < 6; i++) {
+            previousBoard.pieces[i][side] = board.pieces[i][side];
             previousBoard.pieces[i][1-side] = board.pieces[i][1-side];
-            board.pieces[i][1-side] &= ~destinationMask;
         }
-        switch (move->specialMove) {
-            case Move::EN_PASSANT:
-                board.pieces[Board::PAWN_INDEX][1-side] &= ~board.enPassantTarget;
-                break;
-            case Move::PROMOTE_TO_QUEEN:
-                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
-                board.pieces[Board::QUEEN_INDEX][side] |= destinationMask;
-                break;
-            case Move::PROMOTE_TO_ROOK:
-                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
-                board.pieces[Board::ROOK_INDEX][side] |= destinationMask;
-                break;
-            case Move::PROMOTE_TO_BISHOP:
-                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
-                board.pieces[Board::BISHOP_INDEX][side] |= destinationMask;
-                break;
-            case Move::PROMOTE_TO_KNIGHT:
-                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
-                board.pieces[Board::KNIGHT_INDEX][side] |= destinationMask;
-                break;
-        }
-        board.updateOccupancyBitboard();
+        board.makeMove(move, side);
     }
 
-    void untryMove(Move* move, Board& board, const int side) {
-        U64 originMask = 1L<<move->origin;
-        U64 destinationMask = 1L<<move->destination;
-
-        board.pieces[move->piece][side] ^= (originMask | destinationMask);
-        switch (move->specialMove) {
-            case Move::PROMOTE_TO_QUEEN:
-                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
-                board.pieces[Board::QUEEN_INDEX][side] ^= destinationMask;
-                break;
-            case Move::PROMOTE_TO_ROOK:
-                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
-                board.pieces[Board::ROOK_INDEX][side] ^= destinationMask;
-                break;
-            case Move::PROMOTE_TO_BISHOP:
-                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
-                board.pieces[Board::BISHOP_INDEX][side] ^= destinationMask;
-                break;
-            case Move::PROMOTE_TO_KNIGHT:
-                board.pieces[Board::PAWN_INDEX][side] ^= destinationMask;
-                board.pieces[Board::KNIGHT_INDEX][side] ^= destinationMask;
-                break;
-        }
+    void untryMove(Board& board, const int side) {
         for (int i = 0; i < 6; i++) {
+            board.pieces[i][side] = previousBoard.pieces[i][side];
             board.pieces[i][1-side] = previousBoard.pieces[i][1-side];
         }
         board.updateOccupancyBitboard();

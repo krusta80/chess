@@ -10,13 +10,23 @@ class Game
 {
     public:
         Game(const int whitePlayerType, const int blackPlayerType, MoveGenerator& moveGenerator);
+        void inputMove();
+        void play();
         void printEvaluation();
         void printMoveList();
+
         int sideToMove;
+        bool GAME_OVER;
 
     private:
         // Moves
-        std::vector<Move*> moveList;
+        bool isValidMove(char* candidate);
+        void makeMove(Move move);
+        void undoMove();
+
+        Move *currentMove;
+        std::vector<Move*> moveHistory;
+        std::vector<Board*> boardHistory;
         MoveGenerator *moveGenerator;
 
         // Players
