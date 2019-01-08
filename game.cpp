@@ -61,6 +61,9 @@ void Game::inputMove() {
 }
 
 bool Game::isValidMove(char* candidate) {
+    if (strcmp(candidate, "undo") == 0 && moveHistory.size() > 0) {
+        undoMove();
+    }
     for (std::vector<Move*>::iterator i = moveGenerator->moveList.begin();
          i != moveGenerator->moveList.end(); ++i) {
         if (strcmp(candidate, (*i)->getMoveNotation()) == 0) {
@@ -102,7 +105,10 @@ void Game::undoMove() {
     board = *boardHistory.back();
     boardHistory.pop_back();
     sideToMove = 1 - sideToMove;
+    GAME_OVER = false;
 
     board.printBoard();
+    printMoveList();
+    printEvaluation();
     std::cout << std::endl;
 }
