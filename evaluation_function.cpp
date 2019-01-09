@@ -4,10 +4,8 @@ int EvaluationFunction::evaluate(Board& board, MoveGenerator& moveGenerator, con
     // need to make this smarter
     moveGenerator.generateAllMoves(board, side);
     if (isCheckmate(board, moveGenerator, side)) {
-        return side == 0 ?
-                  -1 * Board::PIECE_VALUES[Board::KING_INDEX]
-                :      Board::PIECE_VALUES[Board::KING_INDEX];
-        }
+        return side == 0 ? -1 * Board::PIECE_VALUES[Board::KING_INDEX] : Board::PIECE_VALUES[Board::KING_INDEX];
+    }
     if (isStalemate(board, moveGenerator, side)) {
             return 0;
     }

@@ -9,7 +9,7 @@
 int main()
 {
     MoveGenerator* moveGenerator = new MoveGenerator();
-    Game* game = new Game(1, 1, *moveGenerator);
+    Game* game = new Game(1, 0, *moveGenerator);
 
     game->play();
 }

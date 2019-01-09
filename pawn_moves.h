@@ -2,7 +2,7 @@
 #define PAWN_MOVES_H
 
 #include "magic-bits/src/common.h"
-#include <iostream>>
+#include <iostream>
 #include "bit.h"
 
 // Comprises methods to generate pawn moves

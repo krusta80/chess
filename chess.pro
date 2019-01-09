@@ -10,7 +10,8 @@ SOURCES += \
     board.cpp \
     king_attacks.cpp \
     evaluation_function.cpp \
-    game.cpp
+    game.cpp \
+    minimax.cpp
 
 HEADERS += \
     magic-bits/src/common.h \
@@ -23,7 +24,8 @@ HEADERS += \
     pawn_moves.h \
     knight_attacks.h \
     evaluation_function.h \
-    game.h
+    game.h \
+    minimax.h
 
 DISTFILES += \
     magic-bits/magics/bishop_attack_table.magic \

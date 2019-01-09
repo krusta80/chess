@@ -11,6 +11,7 @@ class Move
             this->destination = destination;
             this->piece = pieceTypeIndex;
             this->specialMove = specialMove;
+            this->minimaxValue = 0;
         }
 
         char* getMoveNotation();
@@ -20,6 +21,7 @@ class Move
         int destination;
         int piece;
         int specialMove;
+        int minimaxValue;
 
         constexpr static int STANDARD = 0;
         constexpr static int CASTLE_KINGSIDE = 1;

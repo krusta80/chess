@@ -1,5 +1,6 @@
 #include "game.h"
 #include "evaluation_function.h"
+#include "minimax.h"
 #include "move_generator.h"
 
 #include <vector>
@@ -38,7 +39,8 @@ void Game::play() {
                 inputMove();
                 break;
             case COMPUTER:
-                // TODO (jgruska): NOOP for now
+                moveGenerator->generateAllMoves(board, sideToMove);
+                *currentMove = Minimax::minimax(board, new Move(-1, -1, -1, -1), sideToMove, *moveGenerator, 3);
                 break;
         }
         makeMove(*currentMove);
