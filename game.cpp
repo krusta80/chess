@@ -39,7 +39,6 @@ void Game::play() {
                 inputMove();
                 break;
             case COMPUTER:
-                moveGenerator->generateAllMoves(board, sideToMove);
                 *currentMove = Minimax::minimax(board, new Move(-1, -1, -1, -1), sideToMove, *moveGenerator, 3);
                 break;
         }
