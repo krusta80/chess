@@ -1,25 +1,7 @@
 #include "evaluation_function.h"
 
 int EvaluationFunction::evaluate(Board& board, MoveGenerator& moveGenerator, const int side) {
-    // need to make this smarter
-    moveGenerator.generateAllMoves(board, side);
-    if (isCheckmate(board, moveGenerator, side)) {
-        return side == 0 ? -1 * Board::PIECE_VALUES[Board::KING_INDEX] : Board::PIECE_VALUES[Board::KING_INDEX];
-    }
-    if (isStalemate(board, moveGenerator, side)) {
-            return 0;
-    }
     return getMaterialBalance(board);
-}
-
-bool EvaluationFunction::isCheckmate(Board& board, MoveGenerator& moveGenerator, const int side) {
-    //  Assumes move list already generated for given board and side
-    return moveGenerator.moveList.size() == 0 && moveGenerator.isInCheck(board, side);
-}
-
-bool EvaluationFunction::isStalemate(Board& board, MoveGenerator& moveGenerator, const int side) {
-    //  Assumes move list already generated for given board and side
-    return moveGenerator.moveList.size() == 0 && !moveGenerator.isInCheck(board, side);
 }
 
 int EvaluationFunction::getMaterialBalance(Board& board) {

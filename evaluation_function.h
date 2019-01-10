@@ -8,8 +8,6 @@ class EvaluationFunction
 {
     public:
         static int evaluate(Board& board, MoveGenerator& moveGenerator, const int side);
-        static bool isCheckmate(Board& board, MoveGenerator& moveGenerator, const int side);
-        static bool isStalemate(Board& board, MoveGenerator& moveGenerator, const int side);
 
     private:
         static int getMaterialBalance(Board& board);

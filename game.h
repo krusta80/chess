@@ -22,6 +22,10 @@ class Game
         constexpr static int BLACK = 1;
 
     private:
+        // Game State
+        bool isCheckmate();
+        bool isStalemate();
+
         // Moves
         bool isValidMove(char* candidate);
         void makeMove(Move move);

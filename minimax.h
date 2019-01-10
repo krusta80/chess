@@ -15,6 +15,7 @@ class Minimax
 
     private:
         static int SIDE_VALUE_COEFFICIENT[2];
+        static int SIDE_IMPOSSIBLE_MOVE_THRESHOLD[2];
 };
 
 #endif // MINIMAX_H

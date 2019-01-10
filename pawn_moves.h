@@ -12,12 +12,12 @@
 class PawnMoves
 {
     public:
-        U64 WhiteMoves(const U64 pawns, const U64 emptySpaces) const {
-            return (WhiteAttacks(pawns, emptySpaces) | WhiteAdvances(pawns, emptySpaces));
+        U64 WhiteMoves(const U64 pawns, const U64 emptySpaces, const U64 blackOccupied) const {
+            return (WhiteAttacks(pawns, ~blackOccupied) | WhiteAdvances(pawns, emptySpaces));
         }
 
-        U64 BlackMoves(const U64 pawns, const U64 emptySpaces) const {
-            return (BlackAttacks(pawns, emptySpaces) | BlackAdvances(pawns, emptySpaces));
+        U64 BlackMoves(const U64 pawns, const U64 emptySpaces, const U64 whiteOccupied) const {
+            return (BlackAttacks(pawns, ~whiteOccupied) | BlackAdvances(pawns, emptySpaces));
         }
 
         U64 Attacks(const U64 pawns, const U64 emptySpaces, const int side) const {

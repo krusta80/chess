@@ -39,8 +39,6 @@ class MoveGenerator {
         addAllPawnMoves(board, side);
         addAllQueenMoves(board, side);
         addAllRookMoves(board, side);
-
-        removeIllegalMoves(board, side);
     }
 
     bool isInCheck(Board& board, const int side) {
@@ -133,47 +131,6 @@ class MoveGenerator {
         }
     }
 
-    void removeIllegalMoves(Board& board, const int side) {
-        int moveCount = moveList.size();
-
-        for (int i = 0; i < moveCount; i++) {
-            if (isIllegal(moveList.at(i), board, side)) {
-                std::iter_swap(moveList.begin() + i, moveList.end() - 1);
-                moveList.pop_back();
-                moveCount--;
-                i--;
-            }
-        }
-    }
-
-    bool isIllegal(Move* move, Board& board, const int side) {
-        // TODO(jgruska): Predetermine xray blockers to speed this up.
-        bool isIllegal = false;
-
-        tryMove(move, board, side);
-        if (isInCheck(board, side)) {
-            isIllegal = true;
-        }
-        untryMove(board, side);
-        return isIllegal;
-    }
-
-    void tryMove(Move* move, Board& board, const int side) {
-        for (int i = 0; i < 6; i++) {
-            previousBoard.pieces[i][side] = board.pieces[i][side];
-            previousBoard.pieces[i][1-side] = board.pieces[i][1-side];
-        }
-        board.makeMove(move, side, /* tryOnly */ true);
-    }
-
-    void untryMove(Board& board, const int side) {
-        for (int i = 0; i < 6; i++) {
-            board.pieces[i][side] = previousBoard.pieces[i][side];
-            board.pieces[i][1-side] = previousBoard.pieces[i][1-side];
-        }
-        board.updateOccupancyBitboard();
-    }
-
     bool isAttacked(Board& board, U64 square_bitboard, int side) {
         // TODO(jgruska): Speed this up.
         const int index =  __builtin_ffsll(square_bitboard)-1;
@@ -214,12 +171,14 @@ class MoveGenerator {
             case WHITE_:
               pawn_moves = pawn_moves_.WhiteMoves(
                             1L<<pawn_index,
-                            ~board.sideBitboard(1-side));
+                            ~board.occupancyBitboard(),
+                            board.sideBitboard(1-side));
               break;
             case BLACK_:
               pawn_moves = pawn_moves_.BlackMoves(
                             1L<<pawn_index,
-                            ~board.sideBitboard(1-side));
+                            ~board.occupancyBitboard(),
+                            board.sideBitboard(1-side));
         }
         addMovesFromAttackBitboard(pawn_moves, pawn_index, Board::PAWN_INDEX, Move::STANDARD);
     }

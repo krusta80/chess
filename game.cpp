@@ -28,7 +28,7 @@ Game::Game(const int whitePlayerType, const int blackPlayerType, MoveGenerator& 
     // Update console output
     board.printBoard();
     std::cout << std::endl;
-    printMoveList();
+//    printMoveList();
     printEvaluation();
 }
 
@@ -39,13 +39,17 @@ void Game::play() {
                 inputMove();
                 break;
             case COMPUTER:
-                *currentMove = Minimax::minimax(board, new Move(-1, -1, -1, -1), sideToMove, *moveGenerator, 3);
+                *currentMove = Minimax::minimax(board, new Move(-1, -1, -1, -1), sideToMove, *moveGenerator, 4);
                 break;
         }
-        makeMove(*currentMove);
+        if (currentMove->piece == -1) {
+            GAME_OVER = true;
+        } else {
+            makeMove(*currentMove);
+        }
     }
     std::cout << "GAME OVER: ";
-    if (moveGenerator->isInCheck(board, sideToMove)) {
+    if (isCheckmate()) {
         std::cout << (sideToMove == BLACK ? "White Wins!" : "Black Wins!") << std::endl;
     } else {
         std::cout << "DRAW!" << std::endl;
@@ -96,7 +100,8 @@ void Game::makeMove(Move move) {
     GAME_OVER = moveGenerator->moveList.size() == 0;
 
     board.printBoard();
-    printMoveList();
+//    printMoveList();
+    move.printMove();
     printEvaluation();
     std::cout << std::endl;
 }
@@ -112,4 +117,14 @@ void Game::undoMove() {
     printMoveList();
     printEvaluation();
     std::cout << std::endl;
+}
+
+bool Game::isCheckmate() {
+    //  Assumes move list already generated for given board and side
+    return GAME_OVER && moveGenerator->isInCheck(board, sideToMove);
+}
+
+bool Game::isStalemate() {
+    //  Assumes move list already generated for given board and side
+    return GAME_OVER && !moveGenerator->isInCheck(board, sideToMove);
 }

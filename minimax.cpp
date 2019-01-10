@@ -9,7 +9,8 @@ Move Minimax::minimax(Board board, Move* moveMade, const int side, MoveGenerator
     moveGenerator.generateAllMoves(board, side);
     std::vector<Move*> moveList = moveGenerator.moveList;
 
-    moveMade->minimaxValue = SIDE_VALUE_COEFFICIENT[1-side] * INT_MAX;
+    moveMade->minimaxValue = SIDE_IMPOSSIBLE_MOVE_THRESHOLD[1-side];
+//    std::cout << "======================================" << std::endl;
 //    std::cout << "Level " << level << std::endl;
 //    if (!topLevel) {
 //        std::cout << "Against Move " << moveMade->getMoveNotation();
@@ -17,10 +18,15 @@ Move Minimax::minimax(Board board, Move* moveMade, const int side, MoveGenerator
 //    std::cout << "(" << moveMade->minimaxValue << ")" << std::endl;
     for (std::vector<Move*>::iterator i = moveList.begin(); i != moveList.end(); ++i) {
         newBoard->makeMove(*i, side, /* tryOnly */ false);
+        if (moveGenerator.isInCheck(*newBoard, side)) {
+            delete newBoard;
+            newBoard = new Board(board);
+            continue;
+        }
 
         candidateMove = *i;
         candidateMove->minimaxValue = EvaluationFunction::evaluate(*newBoard, moveGenerator, 1-side);
-        if (level > 0 && moveGenerator.moveList.size() > 0) {
+        if (level > 0) {
             *candidateMove = minimax(*newBoard, *i, 1-side, moveGenerator, level-1);
         }
 //        std::cout << "Level " << level << std::endl;
@@ -29,7 +35,8 @@ Move Minimax::minimax(Board board, Move* moveMade, const int side, MoveGenerator
 //        std::cout << "(" << candidateMove->minimaxValue << ")" << std::endl;
 //        std::cout << "candidate: " << SIDE_VALUE_COEFFICIENT[side]*candidateMove->minimaxValue << std::endl;
 //        std::cout << "old: " << SIDE_VALUE_COEFFICIENT[side]*moveMade->minimaxValue << std::endl;
-        if (SIDE_VALUE_COEFFICIENT[side]*candidateMove->minimaxValue >
+        if (candidateMove->piece != -1 &&
+                SIDE_VALUE_COEFFICIENT[side]*candidateMove->minimaxValue >
                 SIDE_VALUE_COEFFICIENT[side]*moveMade->minimaxValue) {
             if (topLevel) {
                 moveMade = new Move(*candidateMove);
@@ -42,8 +49,15 @@ Move Minimax::minimax(Board board, Move* moveMade, const int side, MoveGenerator
         delete newBoard;
         newBoard = new Board(board);
     }
-//    moveMade->printMove();
+//    if (moveMade->piece != -1) {
+//        moveMade->printMove();
+//        std::cout << "Level " << level << std::endl;
+//    }
     return *moveMade;
 }
 
 int Minimax::SIDE_VALUE_COEFFICIENT[2] = {1, -1};
+int Minimax::SIDE_IMPOSSIBLE_MOVE_THRESHOLD[2] = {
+            Board::PIECE_VALUES[Board::KING_INDEX]>>1,
+            -1*(Board::PIECE_VALUES[Board::KING_INDEX]>>1)
+};
