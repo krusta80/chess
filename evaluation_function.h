@@ -11,6 +11,9 @@ class EvaluationFunction
 
     private:
         static int getMaterialBalance(Board& board);
+        static int getPieceBalance(const int index, const U64 whiteBB, const U64 blackBB);
+
+        static int PIECE_SQUARE_VALUES[6][64];
 };
 
 #endif // EVALUATION_FUNCTION_H

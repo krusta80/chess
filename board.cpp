@@ -237,9 +237,9 @@ const char* Board::SQUARE_LABELS[] = {
 };
 
 const int Board::PIECE_VALUES[] = {
-   300,        // Bishop
+   330,        // Bishop
    999999,     // King
-   300,        // Knight
+   320,        // Knight
    100,        // Pawn
    900,        // Queen
    500         // Rook
